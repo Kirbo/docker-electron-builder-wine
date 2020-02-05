@@ -5,8 +5,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends software-proper
   apt-get -y purge software-properties-common libdbus-glib-1-2 python3-dbus python3-gi python3-pycurl python3-software-properties && \
   apt-get install -y --no-install-recommends winehq-stable
 
-RUN apt-get install libcurl4-openssl-dev -y && \
-  # clean
+RUN apt-get install software-properties-common -y && \
+  add-apt-repository ppa:xapienz/curl34 && \
+  apt-get update
+
+RUN apt-get install libcurl4 -y && \
   apt-get clean && rm -rf /var/lib/apt/lists/* && unlink winehq.key
 
 RUN curl -L https://github.com/electron-userland/electron-builder-binaries/releases/download/wine-2.0.3-mac-10.13/wine-home.zip > /tmp/wine-home.zip && unzip /tmp/wine-home.zip -d /root/.wine && unlink /tmp/wine-home.zip
